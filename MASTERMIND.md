@@ -9,15 +9,16 @@ script does, why it exists, how to read its output, and what to do next.
 ## Table of Contents
 
 1. [Philosophy](#philosophy)
-2. [Cloud Security](#cloud-security)
+2. [CI — GitHub Actions](#ci--github-actions)
+3. [Cloud Security](#cloud-security)
    - [aws_iam_audit.sh](#aws_iam_auditsh)
    - [aws_sec_sweep.sh](#aws_sec_sweepsh)
    - [sg_audit.sh](#sg_auditsh)
-3. [SOC & Incident Response](#soc--incident-response)
+4. [SOC & Incident Response](#soc--incident-response)
    - [siem_hunt.sh](#siem_huntsh)
    - [ioc_check.py](#ioc_checkpy)
    - [ir_collect.sh](#ir_collectsh)
-4. [Vulnerability Management](#vulnerability-management)
+5. [Vulnerability Management](#vulnerability-management)
    - [vuln_triage.sh](#vuln_triagesh)
    - [patch_reporter.sh](#patch_reportersh)
 5. [SSDLC & DevSecOps](#ssdlc--devsecops)
@@ -28,6 +29,49 @@ script does, why it exists, how to read its output, and what to do next.
    - [compliance_map.py](#compliance_mappy)
 7. [Tool Dependencies at a Glance](#tool-dependencies-at-a-glance)
 8. [Connecting the Workflow](#connecting-the-workflow)
+
+---
+
+## CI — GitHub Actions
+
+Every push to `main` automatically runs two lint jobs defined in
+[`.github/workflows/lint.yml`](.github/workflows/lint.yml).
+
+### ShellCheck
+
+Runs `shellcheck --severity=warning` against every `.sh` file in the repo.
+ShellCheck is a static analyser for shell scripts — it catches things that
+are syntactically valid but dangerous:
+
+- Unquoted variables that break on filenames with spaces (`$f` vs `"$f"`)
+- `[ $x == y ]` instead of `[[ $x == y ]]` — the former splits on whitespace
+- Useless `cat file | grep` — should be `grep file` directly
+- Missing `|| true` on commands inside `set -e` scripts that are expected to fail
+- Uninitialized variables, array misuse, and deprecated syntax
+
+All scripts in this collection pass ShellCheck at `--severity=warning`.
+If you add a new script, it must pass before merging.
+
+### Ruff
+
+Runs `ruff check --select=E,F,W` against every `.py` file.
+Ruff is a fast Python linter (written in Rust) that covers the same rules
+as Flake8. The selected rule sets:
+
+- `E` — PEP8 style errors (line length, indentation, whitespace)
+- `F` — Pyflakes (unused imports, undefined names, unreachable code)
+- `W` — warnings (deprecated constructs, bad practices)
+
+### Why lint and not test?
+
+These scripts interact with live systems — AWS APIs, Docker daemons,
+real log files. Meaningful tests would require mocking entire cloud
+environments, which adds complexity without adding confidence.
+
+Linting catches the class of bugs that actually matters here: syntax
+errors and unsafe shell patterns that would silently produce wrong output
+or fail in unexpected ways on a production host. That is the right
+trade-off for an ops toolbox.
 
 ---
 

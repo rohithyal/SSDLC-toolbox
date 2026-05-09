@@ -1,5 +1,7 @@
 # Security Scripts
 
+![Lint](https://github.com/rohithyal/SSDLC-toolbox/actions/workflows/lint.yml/badge.svg)
+
 Practical automation for daily security engineering work.
 Cloud security, SOC operations, vulnerability management, SSDLC, and compliance.
 
@@ -69,3 +71,12 @@ pip install semgrep safety checkov   # SSDLC tools
 export VT_API_KEY=your_virustotal_key
 export ABUSEIPDB_KEY=your_abuseipdb_key
 ```
+
+## CI
+
+Every push to `main` runs two automated lint checks via GitHub Actions:
+
+- **ShellCheck** — static analysis on all `.sh` scripts, catches syntax errors, unsafe patterns, and POSIX issues
+- **Ruff** — fast Python linter on all `.py` scripts, flags errors and style violations
+
+See [`.github/workflows/lint.yml`](.github/workflows/lint.yml).
