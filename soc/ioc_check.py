@@ -147,7 +147,7 @@ def main():
     ioc_list = list(args.iocs)
     if args.file:
         with open(args.file) as fh:
-            ioc_list += [l.strip() for l in fh if l.strip()]
+            ioc_list += [line.strip() for line in fh if line.strip()]
 
     if not ioc_list:
         parser.print_help()

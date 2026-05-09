@@ -188,7 +188,9 @@ def generate_report(findings: list[str], gaps: dict[str, list[str]]) -> dict:
             ctrl: {
                 "control_name":  CONTROLS.get(ctrl, "Unknown"),
                 "findings":      gap_findings,
-                "remediation":   [REMEDIATION.get(f, "See ISO 27001 guidance") for f in gap_findings],
+                "remediation":   [
+                    REMEDIATION.get(f, "See ISO 27001 guidance") for f in gap_findings
+                ],
             }
             for ctrl, gap_findings in sorted(gaps.items())
         },
