@@ -98,7 +98,7 @@ find "$OUT" -type f | sort | xargs sha256sum > "$OUT/CHECKSUMS.sha256"
 
 # ---- Package ----
 tar czf "${OUT}.tar.gz" "$OUT/"
-rm -rf "$OUT/"
+rm -rf "${OUT:?}/"
 
 log "=== Collection complete: ${OUT}.tar.gz ==="
 echo ""

@@ -24,10 +24,10 @@ uptime | tee -a "$REPORT"
 
 sep "Security updates available"
 if command -v apt >/dev/null 2>&1; then
-    apt-get -s upgrade 2>/dev/null \
-    | grep "^Inst" | grep -i security \
-    | tee -a "$REPORT" \
-    | wc -l | xargs -I{} log "{} security package(s) pending"
+    count=$(apt-get -s upgrade 2>/dev/null \
+        | grep "^Inst" | grep -i security \
+        | tee -a "$REPORT" | wc -l)
+    log "$count security package(s) pending"
 
     sep "Last upgrade timestamp"
     grep -E "^(Start-Date|Commandline:.*upgrade)" /var/log/apt/history.log 2>/dev/null \
