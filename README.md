@@ -3,7 +3,8 @@
 ![Lint](https://github.com/rohithyal/SSDLC-toolbox/actions/workflows/lint.yml/badge.svg)
 
 Practical automation for daily security engineering work.
-Cloud security, SOC operations, vulnerability management, SSDLC, and compliance.
+Cloud security, SOC operations, vulnerability management, SSDLC, compliance,
+AI agent security, Linux hardening, GPU node auditing, and observability stack health.
 
 Read [MASTERMIND.md](MASTERMIND.md) for the full reference on every script.
 
@@ -48,13 +49,33 @@ Read [MASTERMIND.md](MASTERMIND.md) for the full reference on every script.
 |---|---|---|
 | `compliance/compliance_map.py` | Map findings → ISO 27001:2022 controls | `python3 compliance_map.py` |
 
+### AI Security
+
+| Script | What it does | Run as |
+|---|---|---|
+| `ai-security/prompt_injection_scanner.py` | Static prompt injection vulnerability analysis | `python3 prompt_injection_scanner.py -f templates.json` |
+| `ai-security/agent_scope_auditor.py` | AI agent token scope and permission audit | `python3 agent_scope_auditor.py -f agents.json` |
+
+### Infrastructure Hardening
+
+| Script | What it does | Run as |
+|---|---|---|
+| `infra/linux_hardener.sh` | CIS-based Linux hardening audit (+ optional apply) | `sudo ./linux_hardener.sh` |
+| `infra/gpu_node_audit.sh` | On-prem GPU node security audit | `sudo ./gpu_node_audit.sh` |
+
+### Monitoring
+
+| Script | What it does | Run as |
+|---|---|---|
+| `monitoring/observability_check.sh` | Prometheus, Grafana, Alertmanager health check | `./observability_check.sh` |
+
 ---
 
 ## Setup
 
 ```bash
 # Make all shell scripts executable
-chmod +x cloud/*.sh soc/*.sh vuln/*.sh ssdlc/*.sh
+chmod +x cloud/*.sh soc/*.sh vuln/*.sh ssdlc/*.sh infra/*.sh monitoring/*.sh
 
 # Required tools
 apt install jq awscli          # core
