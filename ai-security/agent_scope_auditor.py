@@ -172,7 +172,8 @@ def audit_scopes(agent: dict) -> list[AgentFinding]:
     # write scopes without clear write purpose
     purpose = agent.get("purpose", "").lower()
     write_scopes = [s for s in scopes if s.endswith(":write") or s.endswith(":delete")]
-    if write_scopes and not any(w in purpose for w in ["write", "creat", "updat", "delet", "modif"]):
+    write_keywords = ["write", "creat", "updat", "delet", "modif"]
+    if write_scopes and not any(w in purpose for w in write_keywords):
         findings.append(AgentFinding(
             agent=name,
             severity="HIGH",

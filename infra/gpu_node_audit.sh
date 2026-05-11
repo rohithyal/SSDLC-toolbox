@@ -171,7 +171,8 @@ check_access_control() {
     ls -la /dev/nvidia* 2>/dev/null | tee -a "$REPORT" || warn "/dev/nvidia* not found"
 
     # check that GPU devices are not world-readable
-    if ls /dev/nvidia* 2>/dev/null | xargs stat -c "%a %n" 2>/dev/null \
+    if find /dev -maxdepth 1 -name "nvidia*" -print0 2>/dev/null \
+        | xargs -0 stat -c "%a %n" 2>/dev/null \
         | awk '$1 ~ /7$/ {print "WORLD_ACCESSIBLE:", $2}' \
         | grep -q "WORLD"; then
         fail "GPU device nodes are world-accessible — restrict to gpu group"

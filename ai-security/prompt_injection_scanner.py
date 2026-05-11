@@ -95,7 +95,7 @@ STRUCTURAL_CHECKS: list[tuple[str, str, str, str]] = [
         "missing_input_delimiter",
         r"\{[a-zA-Z_]+\}(?!\s*[\"\'`\]\)])",
         "MEDIUM",
-        "Template variable lacks surrounding delimiters — easier for payload to escape template context",
+        "Template variable lacks surrounding delimiters — payload can escape template context",
     ),
     (
         "system_prompt_too_short",
