@@ -284,7 +284,10 @@ def audit_agent_chaining(agents: list[dict]) -> list[AgentFinding]:
                     severity="LOW",
                     category="undefined_agent_target",
                     description=f"Agent calls undefined agent '{target_name}'",
-                    recommendation="Define all agents in the config. Undefined targets bypass auditing.",
+                    recommendation=(
+                        "Define all agents in the config. "
+                        "Undefined targets bypass auditing."
+                    ),
                 ))
                 continue
 
